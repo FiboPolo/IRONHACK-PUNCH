@@ -58,7 +58,17 @@ const enemy = new Sprite({
 enemy.draw()
 
 console.log(player, enemy)
-//more 
+//more keys:
+const keys = {
+  a: {
+    pressed: false
+  },
+  d: {
+    pressed: false
+  }
+}
+let lastKey
+
 //create an infinite loop to animate players
 function animate() {
   window.requestAnimationFrame(animate)
@@ -66,6 +76,14 @@ function animate() {
   c.fillRect(0,0, canvas.width, canvas.height)
   player.update()
   enemy.update()
+  //more keys:
+  player.velocity.x = 0
+
+  if (keys.a.pressed){
+    player.velocity.x = -1    
+  } else if (keys.d.pressed){
+    player.velocity.x =1
+  }
 }
 animate()
 
@@ -73,11 +91,13 @@ animate()
 window.addEventListener('keydown', (event) => {
   switch (event.key) {
     case 'd':
-    player.velocity.x = 1
-    break
+      keys.d.pressed = true
+      lastKey = 'd'
+      break
     case 'a':
-    player.velocity.x = -1
-    break
+      keys.a.pressed = true
+      lastKey = 'a'
+      break
   }
   console.log(event.key);
 })
@@ -85,11 +105,11 @@ window.addEventListener('keydown', (event) => {
 window.addEventListener('keyup', (event) => {
   switch (event.key) {
     case 'd':
-    player.velocity.x = 0
-    break
+      keys.d.pressed = false
+      break
     case 'a':
-    player.velocity.x = 0
-    break
+      keys.a.pressed = false
+      break
   }
   console.log(event.key);
 })
