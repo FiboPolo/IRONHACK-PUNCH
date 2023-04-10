@@ -83,6 +83,7 @@ We have big plans for Ironhack Punch! Here are some features we're planning to a
 Contributing:
 
 We welcome contributions from the community! If you'd like to contribute to Ironhack Punch, please follow these steps:
+
 -Fork the repository
 
 -Make your changes in a new branch
