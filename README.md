@@ -56,7 +56,7 @@ Punch: #TBA
 
 Support:
 
-If you need help with Ironhack Punch, please visit our website or contact us at #TBAsupport@ironhackpunch.com. We're always happy to help!
+If you need help with Ironhack Punch, please contact me through https://github.com/FiboPolo. I am always happy to help!
 
 
 Roadmap:
