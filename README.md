@@ -36,7 +36,7 @@ Move right: D key
 
 Jump: W key
 
-Punch: #TBA key
+Punch: Space bar key
 
 
 
@@ -48,7 +48,7 @@ Move right: Right arrow key
 
 Jump: Up arrow key
 
-Punch: #TBA
+Punch: Enter key (Intro)
 
 
 
