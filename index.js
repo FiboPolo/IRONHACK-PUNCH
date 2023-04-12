@@ -132,9 +132,9 @@ function rectangularCollision({rectangle1, rectangle2}) {
     )
 }
 
-//create timer function with loop
+//create timer function with another infinite loop
 let timer = 60
-function decreaseTimer () {
+function decreaseTimer() {
   if (timer > 0) {
     timer--
     document.querySelector('#timer').innerHTML = timer
