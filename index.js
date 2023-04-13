@@ -2,20 +2,132 @@
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
+const startButton = document.querySelector('#startButton')
+const restartButton = document.querySelector('#restartButton')
 
-canvas.height = 576
-canvas.width = 1024
+
+
+canvas.height = 480
+canvas.width = 1022
+
 
 c.fillRect(0, 0, canvas.width, canvas.height)
 
-const gravity = 0.7
+const gravity = 0.9
 
+class Game {
+  constructor() {
+    this.timer = 60; // in seconds
+    this.timerId = null; // reference to the timer interval
+
+    this.startButton = document.querySelector('#startButton')
+    this.restartButton = document.querySelector('#restartButton')
+
+    this.startButton.addEventListener('click', () => this.startGame())
+    this.restartButton.addEventListener('click', () => this.restartGame())
+  }
+
+  startGame() {
+    this.timerId = setInterval(() => {
+      this.timer--;
+      if (this.timer <= 0) {
+        clearInterval(this.timerId)
+        this.timerId = null
+        this.showRestartButton()
+      } else {
+        this.updateTimer()
+      }
+    }, 1000)
+    this.startButton.classList.remove('hidden')
+  }
+
+  restartGame() {
+    this.hideRestartButton()
+    this.resetTimer()
+    this.startGame()
+  }
+
+  updateTimer() {
+    // update the timer display
+    const timerElement = document.querySelector('#timer')
+    timerElement.textContent = `Time left: ${this.timer}`
+  }
+
+  resetTimer() {
+    // reset the timer value and update the display
+    this.timer = 60
+    this.updateTimer()
+  }
+
+  showRestartButton() {
+    // show the restart button
+    this.restartButton.classList.remove('hidden')
+  }
+
+  hideRestartButton() {
+    // hide the restart button
+    this.restartButton.classList.add('hidden')
+  }
+}
+const game = new Game()
+
+
+ 
 class Sprite {
-  constructor({position, velocity, color = 'red', offset }){ //add more properties and wrap them with{ } to make them pass as properties within an argument
+  constructor({position,imageSrc, scale = 1, framesMax = 1, offset ={ x:0, y: 0} }){ //add more properties and wrap them with{ } to make them pass as properties within an argument
     this.position = position
-    this.velocity = velocity
     this.width = 50
     this.height = 150
+    this.image = new Image()
+    this.image.src = imageSrc
+    this.scale = scale
+    this.framesMax = framesMax
+    this.framesCurrent = 0
+    this.framesElapsed = 0
+    this.framesHold = 5
+    this.offset = offset
+
+
+  }
+
+  draw(){
+    c.drawImage(
+      this.image,
+      this.framesCurrent * (this.image.width / this.framesMax),
+      0,
+      this.image.width / this.framesMax,
+      this.image.height,
+      this.position.x - this.offset.x,
+      this.position.y - this.offset.y,
+      (this.image.width / this.framesMax) * this.scale,
+      this.image.height * this.scale
+      ) 
+  }
+
+  update() {
+    this.draw()
+    this.framesElapsed++
+
+    if(this.framesElapsed % this.framesHold ===0){
+      if(this.framesCurrent < this.framesMax - 1) {
+        this.framesCurrent++
+      }else {
+        this.framesCurrent= 0
+      }
+    }
+    
+  }
+    
+}
+
+class Fighter extends Sprite{
+  constructor({position, velocity, color = 'red', imageSrc, scale = 1, framesMax = 1, offset ={ x:0, y: 0} }){ //add more properties and wrap them with{ } to make them pass as properties within an argument
+    super({ //copies the properties of the parent sprite, its super!
+      position, imageSrc, scale, framesMax, offset
+    })
+    this.velocity = velocity
+    this.width = 40
+    this.height = 120
     this.lastKey
     this.attackBox = {    //===assign attack punch to player
       position: {
@@ -30,6 +142,9 @@ class Sprite {
     this.isAttacking
     this.health = 100
     this.timer
+    this.framesCurrent = 0
+    this.framesElapsed = 0
+    this.framesHold = 5
   }
 
 
@@ -55,7 +170,7 @@ class Sprite {
     this.position.x += this.velocity.x
     this.position.y += this.velocity.y
     //adding gravity to players:
-    if (this.position.y + this.height +this.velocity.y >= canvas.height){
+    if (this.position.y + this.height +this.velocity.y >= canvas.height - 12){
       this.velocity.y = 0
     } else  this.velocity.y += gravity
     
@@ -68,11 +183,18 @@ class Sprite {
   }
 }
 
+const background = new Sprite({
+  position:{
+    x: 0, y: 0
+  },
+  imageSrc: 'img/BG.png'
+})
+
 //create players:
-const player = new Sprite({
+const player = new Fighter({
   position: {
-    x: 0,
-    y: 10
+    x: 140,
+    y: 100
   },
   velocity: {
     x: 0,
@@ -82,12 +204,13 @@ const player = new Sprite({
     x: 0,
     y: 0
   }
+  
 })
 player.draw()
 
-const enemy = new Sprite({
+const enemy = new Fighter({
   position: {
-    x: 400,
+    x: 800,
     y: 100
   },
   velocity: {
@@ -148,40 +271,13 @@ function determineWinner({player, enemy }) {
 }
 */
 
-//create decreasing timer function 
-let timer = 60
-let timerId
-function decreaseTimer() {
-  if (timer > 0) {
-    timerId = setTimeout (decreaseTimer, 1000)
-    timer--
-    document.querySelector('#timer').innerHTML = timer
-  }
-
-  //when timer =0 then display who wins or loses
-
-  if (timer === 0) {
-    determineWinner ({player, enemy, timerId})
-  }
-}
-decreaseTimer()
-
-// start game
-
-function startGame() {
- 
-
-  // hide the start button
-  startButton.style.display = "none";
-}
-startGame()
-
 
 //create an infinite loop to animate players
 function animate() {
   window.requestAnimationFrame(animate)
   c.fillStyle = 'black'
   c.fillRect(0,0, canvas.width, canvas.height)
+  background.update()
   player.update()
   enemy.update()
 
@@ -236,6 +332,8 @@ function animate() {
 
 }
 animate()
+
+
 
 
 //moving characters with event listerners + assgning keys

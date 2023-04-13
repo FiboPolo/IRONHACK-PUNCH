@@ -1,0 +1,51 @@
+/* Reset all margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Set font family and size */
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+}
+
+/* Set default text color */
+p {
+  color: #333;
+}
+
+/* Set default link color */
+a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+/* Set default button styles */
+button,
+input[type="button"],
+input[type="submit"] {
+  background-color: #0077cc;
+  border: none;
+  border-radius: 3px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 12px;
+}
+
+/* Set default hover and active styles for buttons */
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+button:active,
+input[type="button"]:active,
+input[type="submit"]:active {
+  background-color: #0066b2;
+}
+
+.hidden { /*should hide my button */
+  display: none;
+}
+

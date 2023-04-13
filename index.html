@@ -91,27 +91,31 @@
         TIE
       </div>
       
-      <canvas id="canvas" width="1024" height="576"></canvas>
+      <canvas id="canvas" width="1024" height="576" style="background-image: url('img\BG.png')"></canvas>
       <button id="startButton" 
-              onclick="startGame()" 
+              onclick="startGame()"
+              class="hidden" 
               style="position:absolute;
-                top:50%;
-                left:50%;
+                top:20%;
+                left:39.4%;
                 transform:translate(-50%,-50%);
-                font-size: 2em;
-                cursor: pointer;">START
+                font-size: 1em;
+                cursor: pointer
+                ">START GAME
       </button>
       <button id="restartButton" 
-              onclick="restartGame()" 
+              onclick="restartGame()"
+              class="hidden" 
               style="position:absolute;
-                top:50%;
-                left:50%;
+                top:20%;
+                left:61.6%;
                 transform:translate(-50%,-50%);
-                font-size: 2em;
+                font-size: 1em;
                 cursor: pointer;
-                display: none">RESTART GAME
+                ">RESTART GAME
       </button>
     </div>
+    
     <script src="index.js"></script>
   </body>
 
